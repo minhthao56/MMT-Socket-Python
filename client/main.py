@@ -1,11 +1,7 @@
 
 from PyQt5 import QtCore, QtWidgets
-import socket
-
-PORT = 65432
-FORMAT = "utf8"
-# Socket client
-client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+from pages.AppRunning import Ui_AppRunning
+from services.socket import client, FORMAT, PORT
 
 
 class Ui_MainApp(object):
@@ -25,9 +21,13 @@ class Ui_MainApp(object):
             print("ERROR SOCKET")
 
     def handleGetListAppRunning(self):
-        client.sendall("running-app".encode(FORMAT))
-        msg = client.recv(1024).decode(FORMAT)
-        print(msg)
+        # client.sendall("running-app".encode(FORMAT))
+        # msg = client.recv(1024).decode(FORMAT)
+        # print(msg)
+        self.win = QtWidgets.QMainWindow()
+        self.ui = Ui_AppRunning()
+        self.ui.setupUi(self.win)
+        self.win.show()
 
     def setupUi(self, MainApp):
         MainApp.setObjectName("MainApp")

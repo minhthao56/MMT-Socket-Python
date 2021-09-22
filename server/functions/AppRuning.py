@@ -1,6 +1,15 @@
-import os
+import psutil
+import json
+from models.ProcessModel import ProcessModel
 
 
 def handleGetListRunning():
-    output = os.popen('wmic process get description, processid').read()
-    print(output)
+    listProcess = []
+    for process in psutil.process_iter():
+        Name = process.name()  # Name of the process
+        ID = process.pid  # ID of the process
+        objectProcess = ProcessModel(id=ID, name=Name)
+        listProcess.append(objectProcess)
+
+    listJOSN = json.dumps([ob.__dict__ for ob in listProcess])
+    return listJOSN

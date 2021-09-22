@@ -21,13 +21,13 @@ try:
     print("conn:", conn.getsockname())
     msg = None
     while (msg != "x"):
-        msg = conn.recv(1024).decode(FORMAT)
+        msg = conn.recv(20000).decode(FORMAT)
         print("client ", addr, "says", msg)
         if(msg == "check"):
             conn.sendall("connected".encode(FORMAT))
         if(msg == "running-app"):
-            conn.sendall("running-app from sever".encode(FORMAT))
-            handleGetListRunning()
+            listJOSN = handleGetListRunning()
+            conn.sendall(listJOSN.encode(FORMAT))
 
 
 except:
