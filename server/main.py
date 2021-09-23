@@ -1,4 +1,5 @@
 import socket
+# import pyscreenshot as ImageGrab
 from functions.AppRuning import handleGetListRunning
 
 
@@ -21,7 +22,7 @@ try:
     print("conn:", conn.getsockname())
     msg = None
     while (msg != "x"):
-        msg = conn.recv(20000).decode(FORMAT)
+        msg = conn.recv(1024).decode(FORMAT)
         print("client ", addr, "says", msg)
         if(msg == "check"):
             conn.sendall("connected".encode(FORMAT))

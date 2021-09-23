@@ -7,14 +7,18 @@ from services.socket import client, FORMAT
 
 class Ui_AppRunning(object):
 
-    listProcess = []
-
     def handleGetListAppRunning(self):
         client.sendall("running-app".encode(FORMAT))
         msg = client.recv(20000).decode(FORMAT)
-        self.listProcess = json.loads(msg)
-        self.win = QtWidgets.QMainWindow()
-        self.setupUi(self.win)
+        listDataTable = json.loads(msg)
+        self.tableWidget.setRowCount(listDataTable.__len__())
+
+        if (listDataTable.__len__() > 0):
+            for idx, val in enumerate(listDataTable):
+                self.tableWidget.setItem(
+                    idx, 0, QTableWidgetItem(val["name"]))
+                self.tableWidget.setItem(
+                    idx, 1, QTableWidgetItem(str(val['id'])))
 
     def setupUi(self, AppRunning):
         AppRunning.setObjectName("AppRunning")
@@ -48,20 +52,12 @@ class Ui_AppRunning(object):
 
         # Table
         self.tableWidget = QTableWidget(self.centralwidget)
-        self.tableWidget.setRowCount(self.listProcess.__len__())
         self.tableWidget.setColumnCount(2)
-        self.tableWidget.setItem(0, 0, QTableWidgetItem("Name Process"))
-        self.tableWidget.setItem(0, 1, QTableWidgetItem("ID Process"))
+        self.tableWidget.setColumnWidth(0, 240)
+        self.tableWidget.setHorizontalHeaderLabels(
+            ["Name Process", "ID Process"])
         self.tableWidget.setGeometry(20, 100, 490, 490)
-
-        if (self.listProcess.__len__() > 0):
-            print("Render")
-            for idx, val in enumerate(self.listProcess):
-                print(val["name"])
-                self.tableWidget.setItem(
-                    idx + 1, 0, QTableWidgetItem(val["name"]))
-                self.tableWidget.setItem(
-                    idx + 1, 1, QTableWidgetItem(val['id']))
+        self.tableWidget.verticalHeader().setVisible(False)
 
         # AppRunning
         AppRunning.setCentralWidget(self.centralwidget)

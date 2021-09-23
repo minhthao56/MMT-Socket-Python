@@ -1,5 +1,6 @@
 
 from PyQt5 import QtCore, QtWidgets
+
 from pages.AppRunning import Ui_AppRunning
 from services.socket import client, FORMAT, PORT
 
